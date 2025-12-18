@@ -9,14 +9,20 @@ public class FileOrder
         return File.Exists(path);
     }
 
-    public void Copy(string sourcePath, string destinationPath)
+    public bool Copy(string sourcePath, string destinationPath)
     {
-        if(File.Exists(destinationPath))
+        if (File.Exists(destinationPath))
         {
             Console.WriteLine("El archivo ya existe en el destino.");
-            return;
+            return false;
+        }
+        if (!Directory.Exists(Path.GetDirectoryName(destinationPath)))
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(destinationPath)!);
+            Console.WriteLine("Directorio de destino creado.");
         }
         File.Copy(sourcePath, destinationPath);
+        return true;    
     }
 
 }
