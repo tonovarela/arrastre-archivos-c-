@@ -1,0 +1,44 @@
+# Archivos y carpetas de compilación
+bin/
+obj/
+
+# Archivos de usuario de Visual Studio
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Archivos de configuración de Rider
+.idea/
+*.sln.iml
+
+# Archivos de MacOS
+.DS_Store
+
+# Archivos de logs
+*.log
+
+# Archivos de configuración local
+*.vspscc
+*.vssscc
+
+# Archivos de paquetes NuGet
+*.nupkg
+# Archivos de lock de NuGet
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Archivos de test
+TestResults/
+
+# Otros
+*.dbmdl
+*.bak
+*.backup
+*.swp
+*.tmp
+*.temp
+
+# Archivos de configuración de VS Code
+.vscode/
