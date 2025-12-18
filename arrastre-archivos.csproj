@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <Folder Include="clases/" />
+    <Folder Include="conf/" />
     <Folder Include="DAO\" />
   </ItemGroup>
 

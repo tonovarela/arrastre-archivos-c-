@@ -3,14 +3,16 @@ namespace arrastre_archivos.DAO;
 
 using Microsoft.Data.SqlClient;
 using DotNetEnv;
+using arrastre_archivos.conf;
+
 public class DAO
 {    
      public static string connectionString =String.Empty;
 
      public DAO()
         {
-            Env.Load(); // Carga las variables del archivo .env
-        connectionString = Environment.GetEnvironmentVariable("SQL_CONNECTION_STRING") ?? throw new InvalidOperationException("La variable de entorno 'SQL_CONNECTION_STRING' no está definida.");                    
+        Conf conf = Conf.getInstance();
+        connectionString = conf.ConnectionString ;
         }
 
     public bool ValidarConexion()
