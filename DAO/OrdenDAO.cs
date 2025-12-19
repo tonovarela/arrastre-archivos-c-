@@ -5,9 +5,9 @@ using Microsoft.Data.SqlClient;
 
 public class OrdenDAO : DAO
 {
-    public List<RutaMetrics> obtenerRutas(string ordenCompra)
+    public List<PartidaMetrics> obtenerRutas(string ordenCompra)
     {
-        List<RutaMetrics> rutas = new List<RutaMetrics>();
+        List<PartidaMetrics> rutas = new List<PartidaMetrics>();
         try
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -42,7 +42,7 @@ public class OrdenDAO : DAO
                     {
                         while (reader.Read())
                         {
-                            RutaMetrics ruta = new RutaMetrics
+                            PartidaMetrics ruta = new PartidaMetrics
                             {
                                 EC = reader["EC"].ToString(),
                                 SC = reader["SC"].ToString(),

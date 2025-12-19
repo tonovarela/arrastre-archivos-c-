@@ -22,8 +22,7 @@ public class Conf
         SourcePathOC = Env.GetString("PATH_ORIGEN_OC") ?? throw new InvalidOperationException("La variable de entorno 'PATH_ORIGEN_OC' no está definida.");
         DestinationPath = Env.GetString("PATH_DESTINO") ?? throw new InvalidOperationException("La variable de entorno 'PATH_DESTINO' no está definida.");
         ConnectionString = Env.GetString("SQL_CONNECTION_STRING") ?? throw new InvalidOperationException("La variable de entorno 'SQL_CONNECTION_STRING' no está definida.");
-        HotFolderPath = Env.GetString("HOT_FOLDER_PATH") ?? throw new InvalidOperationException("La variable de entorno 'HOT_FOLDER_PATH' no está definida.");
-        Console.WriteLine($"Inicializando Conf:");
+        HotFolderPath = Env.GetString("HOT_FOLDER_PATH") ?? throw new InvalidOperationException("La variable de entorno 'HOT_FOLDER_PATH' no está definida.");        
     }
 
     public static Conf getInstance()
