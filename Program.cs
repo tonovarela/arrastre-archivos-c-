@@ -17,18 +17,28 @@ class Program
 
 
         List<string> entradasDeCompra = obtenerArchivosHotFolder();
-        foreach (string archivo in entradasDeCompra)
+        foreach (string entradaDeCompra in entradasDeCompra)
         {
             
             
-            string entradaCompra = Path.GetFileNameWithoutExtension(archivo.Trim());
-            List<PartidaMetrics> partidas = ordenDAO.obtenerRutas(entradaCompra);
+          Console.WriteLine($"Entrada de compra: {entradaDeCompra}");
+            string entradaCompraArchivoSinExtension = Path.GetFileNameWithoutExtension(entradaDeCompra.Trim());
+
+            List<PartidaMetrics> partidas = ordenDAO.obtenerInfo(entradaCompraArchivoSinExtension);
             if (partidas.Count == 0)
                 continue;
 
+            string nuevoNombreArchivoEC = $"{partidas.FirstOrDefault().Ejercicio}/{partidas.FirstOrDefault().Periodo}/{partidas.FirstOrDefault().numProveedor}/EC-{entradaCompraArchivoSinExtension}.htm";    
+            Console.WriteLine($"Nuevo nombre de archivo EC: {nuevoNombreArchivoEC}");
+
             string ordenCompra = partidas.FirstOrDefault().OC;
             string rfcMetrics = partidas.FirstOrDefault().RFC;
+
             string rutaOrdenCompra = Path.Combine(pathOrigenOC, ordenCompra + ".htm");
+
+            string nuevoNombreArchivoOC = $"{partidas.FirstOrDefault().Ejercicio}/{partidas.FirstOrDefault().Periodo}/{partidas.FirstOrDefault().numProveedor}/OC-{ordenCompra}.htm";
+            Console.WriteLine($"Orden de compra: {nuevoNombreArchivoOC}");
+            
             
             try
             {
@@ -49,9 +59,14 @@ class Program
             foreach (var partida in partidas)
             {
                 string rutaSolicitudCompra = Path.Combine(pathOrigenSC, partida.SC + ".htm");
+                
                 if (fileOrder.Exits(rutaSolicitudCompra))
-                {
-                    Console.WriteLine($"Procesando archivo HTML en ruta: {rutaSolicitudCompra}");
+                {                    
+                    string nuevoNombreArchivoSC = $"{partida.Ejercicio}/{partida.Periodo}/{partida.numProveedor}/RQ-{partida.SC}.htm";
+                    
+                    Console.WriteLine($"Procesando Requisicion de compra: {rutaSolicitudCompra}");
+                    Console.WriteLine($"Nuevo nombre de archivo SC: {nuevoNombreArchivoSC}");
+
                 }
             }
         }

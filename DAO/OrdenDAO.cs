@@ -5,9 +5,9 @@ using Microsoft.Data.SqlClient;
 
 public class OrdenDAO : DAO
 {
-    public List<PartidaMetrics> obtenerRutas(string ordenCompra)
+    public List<PartidaMetrics> obtenerInfo(string ordenCompra)
     {
-        List<PartidaMetrics> rutas = new List<PartidaMetrics>();
+        List<PartidaMetrics> listaPartidas = new List<PartidaMetrics>();
         try
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -55,7 +55,7 @@ public class OrdenDAO : DAO
                                 RFC = reader["RFC"].ToString(),
                                 ruta = reader["ruta"].ToString()
                             };
-                            rutas.Add(ruta);                            
+                            listaPartidas.Add(ruta);                            
                         }
                     }
                 }
@@ -65,7 +65,7 @@ public class OrdenDAO : DAO
         {
             Console.WriteLine($"Error al leer órdenes: {ex.Message}");
         }
-        return rutas;
+        return listaPartidas;
     }
 
 }
