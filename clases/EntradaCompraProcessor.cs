@@ -1,6 +1,7 @@
 using arrastre_archivos.DAO;
 using arrastre_archivos.DTO;
 using arrastre_archivos.entities;
+using arrastre_archivos.exceptions;
 
 namespace arrastre_archivos.clases;
 
@@ -14,13 +15,17 @@ public class EntradaCompraProcessor
     private readonly string _pathOrigenOC;
     private readonly string _pathOrigenSC;
 
+    private readonly string _pathDestino;
+
     public EntradaCompraProcessor(
         OrdenDAO ordenDAO,
         FileOrder fileOrder,
         MetricsFileNamer namer,
         RfcValidator rfcValidator,
         string pathOrigenOC,
-        string pathOrigenSC)
+        string pathOrigenSC,
+        string pathDestino
+        )
     {
         _ordenDAO = ordenDAO;
         _fileOrder = fileOrder;
@@ -28,54 +33,43 @@ public class EntradaCompraProcessor
         _rfcValidator = rfcValidator;
         _pathOrigenOC = pathOrigenOC;
         _pathOrigenSC = pathOrigenSC;
+        _pathDestino = pathDestino;
     }
 
     public List<ArchivoPorProcesar> Procesar(string entradaDeCompraPath)
     {
         List<ArchivoPorProcesar> archivos = new List<ArchivoPorProcesar>();
-        
+
         string entradaCompra = Path.GetFileNameWithoutExtension(entradaDeCompraPath.Trim());
+
         List<PartidaMetrics> partidas = _ordenDAO.obtenerInfo(entradaCompra);
         if (partidas.Count == 0)
-            return  archivos;
+            return archivos;
 
         PartidaMetrics cabecera = partidas[0];
 
-
-
-            
         string ordenCompra = cabecera.OC;
         string rfcMetrics = cabecera.RFC;
         string rutaOrdenCompra = Path.Combine(_pathOrigenOC, ordenCompra + ".htm");
 
-        
-        
-        try
+        if (!_rfcValidator.CoincideRfcProveedor(rutaOrdenCompra, rfcMetrics))
         {
-            if (!_rfcValidator.CoincideRfcProveedor(rutaOrdenCompra, rfcMetrics))
-            {
-                // TODO: Mandar correo
-                Console.WriteLine("RFC no coincide, se omite el procesamiento.");                
-            }
+            throw new RFCNotEqualsException("El RFC del archivo no coincide con el RFC de la base de datos.");
         }
-        catch (Exception e)
+
+        archivos.Add(new ArchivoPorProcesar
         {
-            Console.WriteLine(e.Message);            
-            
-        }
+            RutaArchivo = entradaDeCompraPath,
+            TipoArchivo = TipoArchivo.EC,
+            Destino = $"{_pathDestino}//{_namer.ConstruirNombreEC($"{Path.GetFileName(entradaDeCompraPath)}", cabecera)}"
+        });
 
         archivos.Add(new ArchivoPorProcesar
         {
             RutaArchivo = rutaOrdenCompra,
             TipoArchivo = TipoArchivo.OC,
-            Destino = _namer.ConstruirNombreOC(ordenCompra, cabecera)
+            Destino = $"{_pathDestino}//{_namer.ConstruirNombreOC($"{ordenCompra}.htm", cabecera)}"
         });
-        archivos.Add(new ArchivoPorProcesar
-        {
-            RutaArchivo = entradaDeCompraPath,
-            TipoArchivo = TipoArchivo.EC,
-            Destino = _namer.ConstruirNombreEC(entradaCompra, cabecera)
-        });          
 
         foreach (var partida in partidas)
         {
@@ -86,11 +80,11 @@ public class EntradaCompraProcessor
                 {
                     RutaArchivo = rutaSolicitudCompra,
                     TipoArchivo = TipoArchivo.SC,
-                    Destino = _namer.ConstruirNombreSC(partida.SC, partida)
-                });                                
+                    Destino = $"{_pathDestino}//{_namer.ConstruirNombreSC($"{partida.SC}.htm", partida)}"
+                });
             }
         }
         return archivos;
-        
+
     }
 }

@@ -68,4 +68,44 @@ public class OrdenDAO : DAO
         return listaPartidas;
     }
 
+
+    public void registrarArchivoAnexo(string rutaArchivo)
+    {
+        try
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = @"begin				
+				declare @nombreArchivo varchar(250);
+				declare @path varchar(250);
+                declare @rama varchar(5);
+				declare @id int;
+				set @id=@id_;
+                set @rama=@rama_;
+				set @path=@path_
+			        set @nombreArchivo=@nombreArchivo_                                                               
+			        declare @orden int;				
+		 	        select @orden= iif(max(Orden) is null,0,max(Orden))  from LitoPrueba.dbo.anexomov			
+                                where rama=@rama and ID=@id                                                
+				insert into LitoPrueba.dbo.anexomov (Rama,Nombre,ID,Direccion,Icono,Tipo,Orden,Comentario,FechaEmision)
+				            values(@rama,@nombreArchivo,@id,@path,66,'Archivo',@orden+1,'HOT FOLDER',GETDATE());
+		     	end	";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@id_", 999999);
+                    command.Parameters.AddWithValue("@path_", rutaArchivo);
+                    command.Parameters.AddWithValue("@rama_", "CXP");
+                    command.Parameters.AddWithValue("@nombreArchivo_", Path.GetFileName(rutaArchivo));
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al registrar archivo anexo: {ex.Message}");
+        }
+    }
+
 }

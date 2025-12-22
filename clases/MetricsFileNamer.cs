@@ -10,7 +10,7 @@ public class MetricsFileNamer
             partida.Ejercicio.ToString(),
             partida.Periodo,
             partida.numProveedor,
-            $"EC-{entradaCompra}.htm");
+            $"EC-{entradaCompra}");
     }
 
     public string ConstruirNombreOC(string ordenCompra, PartidaMetrics partida)
@@ -19,7 +19,7 @@ public class MetricsFileNamer
             partida.Ejercicio.ToString(),
             partida.Periodo,
             partida.numProveedor,
-            $"OC-{ordenCompra}.htm");
+            $"OC-{ordenCompra}");
     }
 
     public string ConstruirNombreSC(string solicitudCompra, PartidaMetrics partida)
@@ -28,6 +28,6 @@ public class MetricsFileNamer
             partida.Ejercicio.ToString(),
             partida.Periodo,
             partida.numProveedor,
-            $"RQ-{solicitudCompra}.htm");
+            $"RQ-{solicitudCompra}");
     }
 }

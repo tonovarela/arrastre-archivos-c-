@@ -12,6 +12,7 @@
     <Folder Include="clases/" />
     <Folder Include="conf/" />
     <Folder Include="DAO\" />
+    <Folder Include="exceptions/" />
   </ItemGroup>
 
   <ItemGroup>
