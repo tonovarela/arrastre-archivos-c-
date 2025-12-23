@@ -1,5 +1,7 @@
 
 
+using Microsoft.Identity.Client;
+
 namespace arrastre_archivos.DTO;
 
 public class ArchivoPorProcesar
@@ -9,6 +11,8 @@ public class ArchivoPorProcesar
     public string RutaArchivo { get; set; }
     public TipoArchivo TipoArchivo { get; set; } 
     public string Destino { get; set; }
+
+    public int ID { get; set; }
 
 
 
@@ -21,7 +25,7 @@ public class ArchivoPorProcesar
 }
 public enum TipoArchivo
 {
-    EC,
+    EC ,
     OC,
     SC
 }

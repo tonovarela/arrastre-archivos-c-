@@ -52,6 +52,7 @@ public class EntradaCompraProcessor
 
         archivos.Add(new ArchivoPorProcesar
         {
+            ID = cabecera.ID,
             RutaArchivo = entradaDeCompraPath,
             TipoArchivo = TipoArchivo.EC,
             Destino = $"{_pathDestino}//{_namer.ConstruirNombreEC($"{Path.GetFileName(entradaDeCompraPath)}", cabecera)}"
@@ -59,6 +60,7 @@ public class EntradaCompraProcessor
 
         archivos.Add(new ArchivoPorProcesar
         {
+            ID = cabecera.ID,
             RutaArchivo = rutaOrdenCompra,
             TipoArchivo = TipoArchivo.OC,
             Destino = $"{_pathDestino}//{_namer.ConstruirNombreOC($"{ordenCompra}.htm", cabecera)}"
@@ -71,6 +73,7 @@ public class EntradaCompraProcessor
             {
                 archivos.Add(new ArchivoPorProcesar
                 {
+                    ID = partida.ID,
                     RutaArchivo = rutaSolicitudCompra,
                     TipoArchivo = TipoArchivo.SC,
                     Destino = $"{_pathDestino}//{_namer.ConstruirNombreSC($"{partida.SC}.htm", partida)}"
