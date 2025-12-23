@@ -27,7 +27,7 @@ class Program
             $"{conf.SourcePath}//{conf.SourcePathSC}",
             $"{conf.DestinationPath}"
              );
-
+        
         foreach (string entradaDeCompra in scanner.ObtenerArchivosTxt())
         {
             try
