@@ -96,8 +96,8 @@ WHERE
 		 	        select @orden= iif(max(Orden) is null,0,max(Orden))  from LitoPrueba.dbo.anexomov			
                                 where rama=@rama and ID=@id                                                
                             
-				insert into LitoPrueba.dbo.anexomov (Rama,Nombre,ID,Direccion,Icono,Tipo,Orden,Comentario,FechaEmision)
-				            values(@rama,@nombreArchivo,@id,@path,66,'Archivo',@orden+1,'HOT FOLDER',GETDATE());
+				insert into LitoPrueba.dbo.anexomov (Rama,Nombre,ID,Direccion,Icono,Tipo,Orden,Comentario,FechaEmision,TipoDocumento)
+				            values(@rama,@nombreArchivo,@id,@path,66,'Archivo',@orden+1,'HOT FOLDER',GETDATE(),@tipo);
 		     	end	";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -106,7 +106,7 @@ WHERE
                     command.Parameters.AddWithValue("@path_", rutaArchivo);
                     command.Parameters.AddWithValue("@rama_", "CXP");
                     command.Parameters.AddWithValue("@nombreArchivo_", Path.GetFileName(rutaArchivo));
-                    //command.Parameters.AddWithValue("@tipo", tipo);
+                    command.Parameters.AddWithValue("@tipo", tipo);
                     command.ExecuteNonQuery();
                 }
             }

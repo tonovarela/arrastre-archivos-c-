@@ -36,8 +36,9 @@ class Program
                 foreach (var archivo in archivosProcesados)
                 {
                     Console.WriteLine(archivo.toString());
+                    
                     fileOrder.Copy(archivo.RutaArchivo, archivo.Destino);
-                    ordenDAO.registrarArchivoAnexo(archivo.Destino.Replace("Volumes","192.168.2.217"), 
+                     ordenDAO.registrarArchivoAnexo(archivo.Destino.Replace("Volumes","192.168.2.217"), 
                                                   archivo.ID,
                                                   archivo.TipoArchivo.ToString());
                 }

@@ -1,6 +1,6 @@
 
 
-using Microsoft.Identity.Client;
+
 
 namespace arrastre_archivos.DTO;
 
@@ -13,8 +13,6 @@ public class ArchivoPorProcesar
     public string Destino { get; set; }
 
     public int ID { get; set; }
-
-
 
 
     public string toString()
