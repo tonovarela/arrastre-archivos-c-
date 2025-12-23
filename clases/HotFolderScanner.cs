@@ -17,6 +17,6 @@ public class HotFolderScanner
 
     public List<string> ObtenerArchivosTxt()
     {
-        return Directory.GetFiles(_hotFolderPath, "*.txt").ToList();
+        return Directory.GetFiles(_hotFolderPath, "*.pdf").ToList();
     }
 }

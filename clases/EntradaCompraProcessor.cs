@@ -8,15 +8,14 @@ namespace arrastre_archivos.clases;
 public class EntradaCompraProcessor
 {
     private readonly OrdenDAO _ordenDAO;
-    private readonly FileOrder _fileOrder;
-    private readonly MetricsFileNamer _namer;
+    private readonly FileOrder _fileOrder;    
     private readonly RfcValidator _rfcValidator;
-
     private readonly string _pathOrigenOC;
     private readonly string _pathOrigenSC;
 
-    private readonly string _pathDestino;
 
+    private readonly string _pathDestino;
+    private readonly MetricsFileNamer _namer;
     public EntradaCompraProcessor(
         OrdenDAO ordenDAO,
         FileOrder fileOrder,
@@ -39,23 +38,17 @@ public class EntradaCompraProcessor
     public List<ArchivoPorProcesar> Procesar(string entradaDeCompraPath)
     {
         List<ArchivoPorProcesar> archivos = new List<ArchivoPorProcesar>();
-
         string entradaCompra = Path.GetFileNameWithoutExtension(entradaDeCompraPath.Trim());
-
         List<PartidaMetrics> partidas = _ordenDAO.obtenerInfo(entradaCompra);
         if (partidas.Count == 0)
             return archivos;
 
         PartidaMetrics cabecera = partidas[0];
-
         string ordenCompra = cabecera.OC;
         string rfcMetrics = cabecera.RFC;
         string rutaOrdenCompra = Path.Combine(_pathOrigenOC, ordenCompra + ".htm");
-
-        if (!_rfcValidator.CoincideRfcProveedor(rutaOrdenCompra, rfcMetrics))
-        {
-            throw new RFCNotEqualsException("El RFC del archivo no coincide con el RFC de la base de datos.");
-        }
+        if (!_rfcValidator.CoincideRfcProveedor(rutaOrdenCompra, rfcMetrics))        
+            throw new RFCNotEqualsException("El RFC del archivo no coincide con el RFC de la base de datos.");        
 
         archivos.Add(new ArchivoPorProcesar
         {
