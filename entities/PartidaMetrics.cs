@@ -16,10 +16,7 @@ public class PartidaMetrics
   public required string RFC { get; set; }
   public required string ruta { get; set; }
 
-  public override string ToString()
-  {
-    return $"EC: {EC}, SC: {SC}, OC: {OC}, Ejercicio: {Ejercicio}, Periodo: {Periodo}, numProveedor: {numProveedor}, RFC: {RFC}";
-  }
+  
 
 
 

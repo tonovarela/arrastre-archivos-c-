@@ -92,7 +92,6 @@ public class EntradaCompraProcessor
         {
             string identificador = partida.ID.ToString();
             string rutaOrdenCompra = Path.Combine(_pathOrigenOC, identificador + ".htm");
-        
             switch (partida.Tipo)
             {
                 case "OC":
@@ -125,8 +124,7 @@ public class EntradaCompraProcessor
                         Destino = $"{_pathDestino}//{_namer.ConstruirNombreEC($"{Path.GetFileName(entradaDeCompraPath)}",partida)}"
                     });
                     break;
-            }
-            
+            }            
         });
         
         

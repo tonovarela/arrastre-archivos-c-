@@ -14,9 +14,6 @@ public class Partida
   public required string RFC { get; set; }
   
 
-  public override string ToString()
-  {
-    return $"ID: {ID}, Tipo: {Tipo}, Ejercicio: {Ejercicio}, Periodo: {Periodo}, numProveedor: {numProveedor}, RFC: {RFC}";
-  }
+ 
 
 }

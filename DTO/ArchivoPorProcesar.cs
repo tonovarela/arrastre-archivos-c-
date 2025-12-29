@@ -13,8 +13,7 @@ public class ArchivoPorProcesar
     public string Destino { get; set; }
     public int ID { get; set; }    
     public string  EntradaCompra { get; set; }
-
-    public string Folio { get; set; }
+    
 
     public bool ExisteRutaArchivo()
     {
@@ -24,7 +23,7 @@ public class ArchivoPorProcesar
 
     public string toString()
     {
-        return $"TipoArchivo: {TipoArchivo},Origen: {RutaArchivo},  ID: {ID} , EntradaCompra: {EntradaCompra}, ExisteArchivo: {ExisteRutaArchivo()}";
+        return $"TipoArchivo: {TipoArchivo},Origen: {RutaArchivo} ";
     }
 
 }

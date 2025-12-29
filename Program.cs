@@ -12,10 +12,8 @@ class Program
     static void Main(string[] args)
     {
         Conf conf = Conf.getInstance();
-
         OrdenDAO ordenDAO = new OrdenDAO();
         FileOrder fileOrder = new FileOrder();
-
         HotFolderScanner scanner = new HotFolderScanner(conf.HotFolderPath);
         MetricsFileNamer namer = new MetricsFileNamer();
         RfcValidator rfcValidator = new RfcValidator();
@@ -26,18 +24,38 @@ class Program
         {
             var archivosProcesados = processor.Procesar(entradaDeCompra);
             var idArchivo = archivosProcesados[0].ID;            
-            //ordenDAO.EliminarAnexoMov(idArchivo.ToString());                            
-            //List<ArchivoPorProcesar> ordenesPorRegistrar = archivosProcesados.Where(a=>a.ExisteRutaArchivo()).ToList();
-            //List<ArchivoPorProcesar> ordenesNoEncontradas = archivosProcesados.Where(a=>!a.ExisteRutaArchivo()).ToList();
+            ordenDAO.EliminarAnexoMov(idArchivo.ToString());    
+
+            List<ArchivoPorProcesar> archivosPorRegistrar = archivosProcesados.Where(a=>a.ExisteRutaArchivo()).ToList();
+            List<ArchivoPorProcesar> archivosNoEncontrados = archivosProcesados.Where(a=>!a.ExisteRutaArchivo()).ToList();
+                        
+            Console.WriteLine($"Archivos  para la entrada de compra {entradaDeCompra}:");
             Console.WriteLine("--------------------------------------");
-            foreach (ArchivoPorProcesar archivo in archivosProcesados)
+            Console.WriteLine($"Archivos encontrados: {archivosPorRegistrar.Count} de  {archivosProcesados.Count}");
+            //Console.ForegroundColor = ConsoleColor.DarkGreen;
+            foreach (ArchivoPorProcesar archivo in archivosPorRegistrar)
             {
-                 //fileOrder.Copy(archivo.RutaArchivo, archivo.Destino);
+                 fileOrder.Copy(archivo.RutaArchivo, archivo.Destino);                 
+                 string destino =archivo.Destino.Replace("Volumes","192.168.2.217");                    
+
+                 ordenDAO.registrarArchivoAnexo(destino, archivo.ID,archivo.TipoArchivo.ToString());            
                  Console.WriteLine(archivo.toString());
-                 //string destino =archivo.Destino.Replace("Volumes","192.168.2.217");                    
-                 //ordenDAO.registrarArchivoAnexo(destino, archivo.ID,archivo.TipoArchivo.ToString());
+            }
+          
+            
+            //Console.ResetColor();
+            if (archivosNoEncontrados.Count > 0)
+            {                                                
+                Console.WriteLine($"Archivos no ubicados: {archivosNoEncontrados.Count}");
+                //Console.ForegroundColor = ConsoleColor.Red;
+                foreach (var archivo in archivosNoEncontrados)
+                {
+                    Console.WriteLine(archivo.toString());
+                }                
+                //Console.ResetColor();                
             }
             Console.WriteLine("--------------------------------------");
+            
             
         }   
         
