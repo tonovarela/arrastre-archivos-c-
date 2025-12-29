@@ -11,13 +11,18 @@ public class ArchivoPorProcesar
     public string RutaArchivo { get; set; }
     public TipoArchivo TipoArchivo { get; set; } 
     public string Destino { get; set; }
+    public int ID { get; set; }    
+    public String  EntradaCompra { get; set; }
 
-    public int ID { get; set; }
+    public bool ExisteRutaArchivo()
+    {
+        return  RutaArchivo.Length > 0 && File.Exists(RutaArchivo);
+    }
 
 
     public string toString()
     {
-        return $"TipoArchivo: {TipoArchivo},Origen: {RutaArchivo}, Destino: {Destino}";
+        return $"TipoArchivo: {TipoArchivo},Origen: {RutaArchivo},  ID: {ID} , EntradaCompra: {EntradaCompra}, ExisteArchivo: {ExisteRutaArchivo()}";
     }
 
 }

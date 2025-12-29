@@ -1,4 +1,5 @@
-﻿using arrastre_archivos.clases;
+﻿using System.Data.Common;
+using arrastre_archivos.clases;
 using arrastre_archivos.conf;
 using arrastre_archivos.DAO;
 using arrastre_archivos.exceptions;
@@ -19,8 +20,7 @@ class Program
         RfcValidator rfcValidator = new RfcValidator();
 
         EntradaCompraProcessor processor = new EntradaCompraProcessor(
-            ordenDAO,
-            fileOrder,
+            ordenDAO,            
             namer,
             rfcValidator,
             $"{conf.SourcePath}//{conf.SourcePathOC}",
@@ -34,24 +34,23 @@ class Program
             
             try
             {                
-                var archivosProcesados = processor.Procesar(entradaDeCompra);
-                foreach (var archivo in archivosProcesados)
-                {
-                    
-                    Console.WriteLine(archivo.toString());                    
-                    fileOrder.Copy(archivo.RutaArchivo, archivo.Destino);
-                    string destino =archivo.Destino.Replace("Volumes","192.168.2.217");                    
-                    ordenDAO.registrarArchivoAnexo(destino, archivo.ID,archivo.TipoArchivo.ToString());
-                }
-            }
-            catch (PartidasNotFoundException pnfe)
-            {
-                Console.WriteLine($"No se procesó el archivo {entradaDeCompra}: {pnfe.Message}");
-            }
+            var archivosProcesados = processor.Procesar(entradaDeCompra);                
+            foreach (var archivo in archivosProcesados)
+              {
+                  Console.WriteLine(archivo.toString());                  
+              }
+                // foreach (var archivo in archivosProcesados)
+                // {                    
+                //     Console.WriteLine(archivo.toString());                    
+                //     //fileOrder.Copy(archivo.RutaArchivo, archivo.Destino);
+                //     //string destino =archivo.Destino.Replace("Volumes","192.168.2.217");                    
+                //     //ordenDAO.registrarArchivoAnexo(destino, archivo.ID,archivo.TipoArchivo.ToString());
+                // }
+            }            
             catch (RFCNotEqualsException rfcEx)
             {
                 Console.WriteLine($"Error de RFC al procesar el archivo {entradaDeCompra}: {rfcEx.Message}");
-            }
+            }            
             catch (Exception ex)
             {
                 Console.WriteLine($"Error al procesar el archivo {entradaDeCompra}: {ex.Message}");

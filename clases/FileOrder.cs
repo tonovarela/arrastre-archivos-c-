@@ -4,10 +4,7 @@ namespace arrastre_archivos.clases;
 public class FileOrder
 {
     
-    public bool Exits(string path)
-    {
-        return File.Exists(path);
-    }
+    
 
     public bool Copy(string sourcePath, string destinationPath)
     {
