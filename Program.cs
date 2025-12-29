@@ -32,7 +32,7 @@ class Program
             Console.WriteLine($"Archivos  para la entrada de compra {entradaDeCompra}:");
             Console.WriteLine("--------------------------------------");
             Console.WriteLine($"Archivos encontrados: {archivosPorRegistrar.Count} de  {archivosProcesados.Count}");
-            //Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
             foreach (ArchivoPorProcesar archivo in archivosPorRegistrar)
             {
                  fileOrder.Copy(archivo.RutaArchivo, archivo.Destino);                 
@@ -43,17 +43,19 @@ class Program
             }
           
             
-            //Console.ResetColor();
+            
             if (archivosNoEncontrados.Count > 0)
-            {                                                
-                Console.WriteLine($"Archivos no ubicados: {archivosNoEncontrados.Count}");
-                //Console.ForegroundColor = ConsoleColor.Red;
+            {   
+                Console.ResetColor();
+                Console.WriteLine($"Archivos no ubicados: {archivosNoEncontrados.Count}");                
+                Console.ForegroundColor = ConsoleColor.Red;                                             
                 foreach (var archivo in archivosNoEncontrados)
                 {
                     Console.WriteLine(archivo.toString());
                 }                
-                //Console.ResetColor();                
+                
             }
+            Console.ResetColor();                
             Console.WriteLine("--------------------------------------");
             
             
