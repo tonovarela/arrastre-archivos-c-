@@ -39,9 +39,9 @@ public class EntradaCompraProcessor
     {
         List<ArchivoPorProcesar> archivos = new List<ArchivoPorProcesar>();
         string entradaCompra = Path.GetFileNameWithoutExtension(entradaDeCompraPath.Trim());
-        List<PartidaMetrics> partidas = _ordenDAO.obtenerInfo(entradaCompra);
+        List<PartidaMetrics> partidas = _ordenDAO.obtenerInfo(entradaCompra);        
         if (partidas.Count == 0)
-            return archivos;
+            throw new PartidasNotFoundException("No se encontraron partidas para el archivo de entrada.");
 
         PartidaMetrics cabecera = partidas[0];
         string ordenCompra = cabecera.OC;

@@ -6,12 +6,13 @@
     <RootNamespace>arrastre_archivos</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     
+    
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="clases/" />
     <Folder Include="conf/" />
-    <Folder Include="DAO\" />
+    <Folder Include="DAO/" />
     <Folder Include="exceptions/" />
   </ItemGroup>
 

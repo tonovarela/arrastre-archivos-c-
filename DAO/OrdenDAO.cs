@@ -25,17 +25,15 @@ public class OrdenDAO : DAO
 	Fecha=convert(date,E.DataEntrada),
 	p.RFC,
 	ruta  = CONCAT('\\192.168.2.217\intelisis\CFD\ContabilidadElectronica\XML_PROV\LITO\FACTURAS_PROVEEDORES\',Year(E.DataEntrada), '\', right(replicate('0', 2) + CAST(month(e.dataEntrada) as VARCHAR(2)), 2), '\',E.CliFor_Codigo,'\') ,
-X.ID  as ID
+	X.ID  as ID
 FROM metricsweb.dbo.ESTNotasFiscaisEntrada E
-	INNER JOIN metricsweb.dbo.ESTItemNotaEntrada D ON E.Objid = D.Objid_NotasFiscaisEntrada                     
-	INNER JOIN metricsweb.dbo.ESTItemNFlxItemPedCompra A on D.Objid=Objid_ItemNotaFiscal
-	INNER JOIN metricsweb.dbo.COMItemPedidoCompra B on A.ObjId_ItemPedidoCompra=B.Objid
-	INNER JOIN metricsweb.dbo.COMSolicitacaoItemPedidoCompra C on C.ObjId_ItemPedidoCompra = B.ObjId
-	INNER JOIN metricsweb.dbo.COMSolicitacaoCompra F on F.ObjId = C.ObjId_SolicitacaoCompra
+    LEFT JOIN metricsweb.dbo.ESTItemNotaEntrada D ON E.Objid = D.Objid_NotasFiscaisEntrada                     
+	LEFT JOIN metricsweb.dbo.ESTItemNFlxItemPedCompra A on D.Objid=Objid_ItemNotaFiscal
+	LEFT JOIN metricsweb.dbo.COMItemPedidoCompra B on A.ObjId_ItemPedidoCompra=B.Objid
+	LEFT JOIN metricsweb.dbo.COMSolicitacaoItemPedidoCompra C on C.ObjId_ItemPedidoCompra = B.ObjId
+	LEFT JOIN metricsweb.dbo.COMSolicitacaoCompra F on F.ObjId = C.ObjId_SolicitacaoCompra
 	LEFT JOIN lito.dbo.prov p on convert(varchar,p.proveedor)  = convert(varchar,E.CliFor_Codigo)
-	INNER JOIN Lito.dbo.CxP X 
-    ON E.NaturezaOperacao COLLATE Modern_Spanish_CI_AS = X.Mov
-   AND E.usr_sequencial = X.MovID
+	INNER JOIN Lito.dbo.CxP X  ON E.NaturezaOperacao COLLATE Modern_Spanish_CI_AS = X.Mov AND convert(varchar,E.usr_sequencial) = convert(varchar,X.MovID)
 WHERE    
 	E.CFOP NOT IN ('1.104')  
 	and (E.Situacao = 1) 
@@ -96,7 +94,7 @@ WHERE
 		 	        select @orden= iif(max(Orden) is null,0,max(Orden))  from LitoPrueba.dbo.anexomov			
                                 where rama=@rama and ID=@id                                                
                             
-				insert into LitoPrueba.-dbo.anexomov (Rama,Nombre,ID,Direccion,Icono,Tipo,Orden,Comentario,FechaEmision,TipoDocumento)
+				insert into LitoPrueba.dbo.anexomov (Rama,Nombre,ID,Direccion,Icono,Tipo,Orden,Comentario,FechaEmision,TipoDocumento)
 				            values(@rama,@nombreArchivo,@id,@path,66,'Archivo',@orden+1,'HOT FOLDER',GETDATE(),@tipo);
 		     	end	";
 

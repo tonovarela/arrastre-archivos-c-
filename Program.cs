@@ -26,22 +26,27 @@ class Program
             $"{conf.SourcePath}//{conf.SourcePathOC}",
             $"{conf.SourcePath}//{conf.SourcePathSC}",
             $"{conf.DestinationPath}"
-             );
-        
-        foreach (string entradaDeCompra in scanner.ObtenerArchivosTxt())
+             );             
+            var archivos = scanner.ObtenerArchivos();
+            
+        foreach (string entradaDeCompra in archivos)
         {
+            
             try
-            {
+            {                
                 var archivosProcesados = processor.Procesar(entradaDeCompra);
                 foreach (var archivo in archivosProcesados)
                 {
-                    Console.WriteLine(archivo.toString());
                     
+                    Console.WriteLine(archivo.toString());                    
                     fileOrder.Copy(archivo.RutaArchivo, archivo.Destino);
-                     ordenDAO.registrarArchivoAnexo(archivo.Destino.Replace("Volumes","192.168.2.217"), 
-                                                  archivo.ID,
-                                                  archivo.TipoArchivo.ToString());
+                    string destino =archivo.Destino.Replace("Volumes","192.168.2.217");                    
+                    ordenDAO.registrarArchivoAnexo(destino, archivo.ID,archivo.TipoArchivo.ToString());
                 }
+            }
+            catch (PartidasNotFoundException pnfe)
+            {
+                Console.WriteLine($"No se procesó el archivo {entradaDeCompra}: {pnfe.Message}");
             }
             catch (RFCNotEqualsException rfcEx)
             {

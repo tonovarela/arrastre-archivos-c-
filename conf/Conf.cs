@@ -5,7 +5,7 @@ namespace arrastre_archivos.conf;
 
 public class Conf
 {
-    private static Conf? _instance;
+    private static Conf _instance;
     private static readonly object _lock = new();
 
     public string SourcePath { get; set; }
