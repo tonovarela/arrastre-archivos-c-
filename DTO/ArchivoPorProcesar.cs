@@ -12,7 +12,9 @@ public class ArchivoPorProcesar
     public TipoArchivo TipoArchivo { get; set; } 
     public string Destino { get; set; }
     public int ID { get; set; }    
-    public String  EntradaCompra { get; set; }
+    public string  EntradaCompra { get; set; }
+
+    public string Folio { get; set; }
 
     public bool ExisteRutaArchivo()
     {

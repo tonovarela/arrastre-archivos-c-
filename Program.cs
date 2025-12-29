@@ -2,6 +2,7 @@
 using arrastre_archivos.clases;
 using arrastre_archivos.conf;
 using arrastre_archivos.DAO;
+using arrastre_archivos.DTO;
 using arrastre_archivos.exceptions;
 
 
@@ -18,46 +19,28 @@ class Program
         HotFolderScanner scanner = new HotFolderScanner(conf.HotFolderPath);
         MetricsFileNamer namer = new MetricsFileNamer();
         RfcValidator rfcValidator = new RfcValidator();
+        EntradaCompraProcessor processor = new EntradaCompraProcessor(ordenDAO,namer,rfcValidator,$"{conf.SourcePath}//{conf.SourcePathOC}",$"{conf.SourcePath}//{conf.SourcePathSC}",$"{conf.DestinationPath}");             
 
-        EntradaCompraProcessor processor = new EntradaCompraProcessor(
-            ordenDAO,            
-            namer,
-            rfcValidator,
-            $"{conf.SourcePath}//{conf.SourcePathOC}",
-            $"{conf.SourcePath}//{conf.SourcePathSC}",
-            $"{conf.DestinationPath}"
-             );             
-            var archivos = scanner.ObtenerArchivos();
-            
-        foreach (string entradaDeCompra in archivos)
+        var archivos = scanner.ObtenerArchivos();            
+         foreach (string entradaDeCompra in archivos)
         {
-            
-            try
-            {                
-            var archivosProcesados = processor.Procesar(entradaDeCompra);                
-            foreach (var archivo in archivosProcesados)
-              {
-                  Console.WriteLine(archivo.toString());                  
-              }
-                // foreach (var archivo in archivosProcesados)
-                // {                    
-                //     Console.WriteLine(archivo.toString());                    
-                //     //fileOrder.Copy(archivo.RutaArchivo, archivo.Destino);
-                //     //string destino =archivo.Destino.Replace("Volumes","192.168.2.217");                    
-                //     //ordenDAO.registrarArchivoAnexo(destino, archivo.ID,archivo.TipoArchivo.ToString());
-                // }
-            }            
-            catch (RFCNotEqualsException rfcEx)
+            var archivosProcesados = processor.Procesar(entradaDeCompra);
+            var idArchivo = archivosProcesados[0].ID;            
+            //ordenDAO.EliminarAnexoMov(idArchivo.ToString());                            
+            //List<ArchivoPorProcesar> ordenesPorRegistrar = archivosProcesados.Where(a=>a.ExisteRutaArchivo()).ToList();
+            //List<ArchivoPorProcesar> ordenesNoEncontradas = archivosProcesados.Where(a=>!a.ExisteRutaArchivo()).ToList();
+            Console.WriteLine("--------------------------------------");
+            foreach (ArchivoPorProcesar archivo in archivosProcesados)
             {
-                Console.WriteLine($"Error de RFC al procesar el archivo {entradaDeCompra}: {rfcEx.Message}");
-            }            
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al procesar el archivo {entradaDeCompra}: {ex.Message}");
+                 //fileOrder.Copy(archivo.RutaArchivo, archivo.Destino);
+                 Console.WriteLine(archivo.toString());
+                 //string destino =archivo.Destino.Replace("Volumes","192.168.2.217");                    
+                 //ordenDAO.registrarArchivoAnexo(destino, archivo.ID,archivo.TipoArchivo.ToString());
             }
-
-
-        }
+            Console.WriteLine("--------------------------------------");
+            
+        }   
+        
     }
 
 }

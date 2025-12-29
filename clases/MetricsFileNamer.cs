@@ -4,7 +4,7 @@ namespace arrastre_archivos.clases;
 
 public class MetricsFileNamer
 {
-    public string ConstruirNombreEC(string entradaCompra, PartidaMetrics partida)
+    public string ConstruirNombreEC(string entradaCompra, Partida partida)
     {
         return Path.Combine(
             partida.Ejercicio.ToString(),
@@ -13,7 +13,7 @@ public class MetricsFileNamer
             $"EC-{entradaCompra}");
     }
 
-    public string ConstruirNombreOC(string ordenCompra, PartidaMetrics partida)
+    public string ConstruirNombreOC(string ordenCompra, Partida partida)
     {
         return Path.Combine(
             partida.Ejercicio.ToString(),
@@ -22,7 +22,7 @@ public class MetricsFileNamer
             $"OC-{ordenCompra}");
     }
 
-    public string ConstruirNombreSC(string solicitudCompra, PartidaMetrics partida)
+    public string ConstruirNombreSC(string solicitudCompra, Partida partida)
     {
         return Path.Combine(
             partida.Ejercicio.ToString(),
