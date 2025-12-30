@@ -3,7 +3,6 @@ using arrastre_archivos.clases;
 using arrastre_archivos.conf;
 using arrastre_archivos.DAO;
 using arrastre_archivos.DTO;
-using arrastre_archivos.exceptions;
 
 
 class Program
@@ -18,6 +17,7 @@ class Program
         MetricsFileNamer namer = new MetricsFileNamer();
         RfcValidator rfcValidator = new RfcValidator();
         EntradaCompraProcessor processor = new EntradaCompraProcessor(ordenDAO,namer,rfcValidator,$"{conf.SourcePath}//{conf.SourcePathOC}",$"{conf.SourcePath}//{conf.SourcePathSC}",$"{conf.DestinationPath}");             
+        var csvWriter = new CsvReportWriter(Path.Combine(conf.DestinationPath, "reportes"));
 
         var archivos = scanner.ObtenerArchivos();            
          foreach (string entradaDeCompra in archivos)
@@ -52,12 +52,12 @@ class Program
                 foreach (var archivo in archivosNoEncontrados)
                 {
                     Console.WriteLine(archivo.toString());
-                }                
-                
+                }                                
             }
             Console.ResetColor();                
             Console.WriteLine("--------------------------------------");
             
+            var csvPath = csvWriter.Write(entradaDeCompra, archivosProcesados);
             
         }   
         
