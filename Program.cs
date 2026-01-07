@@ -26,51 +26,56 @@ class Program
             var archivosProcesados = processor.Procesar(entradaDeCompra);
             var idArchivo = archivosProcesados[0].ID;
 
-            ordenDAO.EliminarAnexoMov(idArchivo.ToString());    
+//            ordenDAO.EliminarAnexoMov(idArchivo.ToString());
 
             List<ArchivoPorProcesar> archivosPorRegistrar = archivosProcesados.Where(a => a.ExisteRutaArchivo()).ToList();
             List<ArchivoPorProcesar> archivosNoEncontrados = archivosProcesados.Where(a => !a.ExisteRutaArchivo()).ToList();
-            Console.WriteLine($"Archivos  para la entrada de compra {entradaDeCompra}:");
-            Console.WriteLine("--------------------------------------");
-            Console.WriteLine($"Archivos encontrados: {archivosPorRegistrar.Count} de  {archivosProcesados.Count}");
-            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            // Console.WriteLine($"Archivos  para la entrada de compra {entradaDeCompra}:");
+            // Console.WriteLine("--------------------------------------");
+            // Console.WriteLine($"Archivos encontrados: {archivosPorRegistrar.Count} de  {archivosProcesados.Count}");
+            // Console.ForegroundColor = ConsoleColor.DarkGreen;
             foreach (ArchivoPorProcesar archivo in archivosPorRegistrar)
             {
                 fileOrder.Copy(archivo.RutaArchivo, archivo.Destino);
                 string destino = archivo.Destino.Replace("Volumes", "192.168.2.217");
-                ordenDAO.registrarArchivoAnexo(destino, archivo.ID,archivo.TipoArchivo.ToString());            
-                Console.WriteLine(archivo.toString());
+             //   ordenDAO.registrarArchivoAnexo(destino, archivo.ID, archivo.TipoArchivo.ToString());
+                // Console.WriteLine(archivo.toString());
             }
 
-            if (archivosNoEncontrados.Count > 0)
-            {
-                Console.ResetColor();
-                Console.WriteLine($"Archivos no ubicados: {archivosNoEncontrados.Count}");
-                Console.ForegroundColor = ConsoleColor.Red;
-                foreach (var archivo in archivosNoEncontrados)
-                {
-                    Console.WriteLine(archivo.toString());
-                }
-            }
-            Console.ResetColor();
-            Console.WriteLine("--------------------------------------");
+            // if (archivosNoEncontrados.Count > 0)
+            // {
+            //     Console.ResetColor();
+            //     Console.WriteLine($"Archivos no ubicados: {archivosNoEncontrados.Count}");
+            //     Console.ForegroundColor = ConsoleColor.Red;
+            //     foreach (var archivo in archivosNoEncontrados)
+            //     {
+            //         Console.WriteLine(archivo.toString());
+            //     }
+            // }
+            // Console.ResetColor();
+            // Console.WriteLine("--------------------------------------");
             todos.AddRange(archivosProcesados);
             todos.AddRange(archivosNoEncontrados);
 
 
         }
-
+        if (todos.Count == 0)
+        {
+            Console.WriteLine("No se encontraron archivos para procesar.");
+            return;
+        }
+        
         string path = csvWriter.Write(todos);
-                
         Console.WriteLine($"Reporte generado en: {path}");
 
-        string  pathProcessed = Path.Combine(conf.HotFolderPath, "procesados");
-        
+        string pathProcessed = Path.Combine(conf.HotFolderPath, "procesados");
+
         List<string> archivosEliminar = todos
                                          .Where(x => x.TipoArchivo == TipoArchivo.EC)
                                          .Select(x => x.RutaArchivo)
                                          .ToList();
-        fileOrder.MoveFiles(archivosEliminar, pathProcessed);        
+
+        //fileOrder.MoveFiles(archivosEliminar, pathProcessed);
         //fileOrder.EliminarArchivos(archivosEliminar);
     }
 

@@ -226,10 +226,10 @@ WHERE
 				set @path=@path_
 			        set @nombreArchivo=@nombreArchivo_                                                               
 			        declare @orden int;				
-		 	        select @orden= iif(max(Orden) is null,0,max(Orden))  from LitoPrueba.dbo.anexomov			
+		 	        select @orden= iif(max(Orden) is null,0,max(Orden))  from dbo.anexomov			
                                 where rama=@rama and ID=@id                                                
                             
-				insert into LitoPrueba.dbo.anexomov (Rama,Nombre,ID,Direccion,Icono,Tipo,Orden,Comentario,FechaEmision,TipoDocumento)
+				insert into dbo.anexomov (Rama,Nombre,ID,Direccion,Icono,Tipo,Orden,Comentario,FechaEmision,TipoDocumento)
 				            values(@rama,@nombreArchivo,@id,@path,66,'Archivo',@orden+1,'HOT FOLDER',GETDATE(),@tipo);
 		     	end	";
 

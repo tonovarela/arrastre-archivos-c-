@@ -34,18 +34,22 @@ public class CsvReportWriter
         var sb = new StringBuilder();
         sb.AppendLine("EntradaCompra,TipoArchivo,RutaArchivo,Destino,ExisteRutaArchivo");
 
-        foreach (var a in archivosProcesados.OrderBy(a=>a.EntradaCompra).ThenBy(a=>a.TipoArchivo))    
+        var grupos = archivosProcesados.GroupBy(a => a.EntradaCompra).ToList();
+        grupos.ForEach(item =>
         {
-            var existe = a.ExisteRutaArchivo();
-            sb.AppendLine(string.Join(",",
-                Csv(a.EntradaCompra ?? string.Empty),                
-                Csv(a.TipoArchivo.ToString()),
-                Csv(a.RutaArchivo ?? string.Empty),
-                Csv(existe ?a.Destino ?? string.Empty: string.Empty),
-                Csv(existe ? "1" : "0")
-            ));
-        }
-
+            foreach (var archivo in item.OrderBy(a => a.TipoArchivo))
+            {
+                var existe = archivo.ExisteRutaArchivo();
+                sb.AppendLine(string.Join(",",
+                    Csv(archivo.EntradaCompra ?? string.Empty),
+                    Csv(archivo.TipoArchivo.ToString()),
+                    Csv(archivo.RutaArchivo ?? string.Empty),
+                    Csv(existe ? archivo.Destino ?? string.Empty : string.Empty),
+                    Csv(existe ? "1" : "0")
+                ));
+            }
+            sb.AppendLine();
+        });        
         File.WriteAllText(fullPath, sb.ToString(), new UTF8Encoding(encoderShouldEmitUTF8Identifier: true));
         return fullPath;
     }
