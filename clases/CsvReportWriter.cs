@@ -22,29 +22,26 @@ public class CsvReportWriter
     }
 
     /// <summary>
-    /// Genera un CSV con el detalle de archivos procesados por cada entrada.
+    /// Genera un CSV con el detalle de archivos procesados en un achivo
+    /// .
     /// </summary>
-    public string Write(string entradaDeCompra, IEnumerable<ArchivoPorProcesar> archivosProcesados)
-    {
-        if (entradaDeCompra is null) throw new ArgumentNullException(nameof(entradaDeCompra));
-        if (archivosProcesados is null) throw new ArgumentNullException(nameof(archivosProcesados));
-
-        var safeEntrada = MakeSafeFileName(entradaDeCompra);
-        var fileName = $"reporte_{safeEntrada}_{DateTime.Now:yyyyMMdd_HHmmss}.csv";
+    public string Write(IEnumerable<ArchivoPorProcesar> archivosProcesados)
+    {        
+        if (archivosProcesados is null) throw new ArgumentNullException(nameof(archivosProcesados));        
+        var fileName = $"reporte_{DateTime.Now:yyyyMMdd_HHmmss}.csv";
         var fullPath = Path.Combine(_outputDirectory, fileName);
 
         var sb = new StringBuilder();
-        sb.AppendLine("EntradaCompra,ID,TipoArchivo,RutaArchivo,Destino,ExisteRutaArchivo");
+        sb.AppendLine("EntradaCompra,TipoArchivo,RutaArchivo,Destino,ExisteRutaArchivo");
 
-        foreach (var a in archivosProcesados)
+        foreach (var a in archivosProcesados.OrderBy(a=>a.EntradaCompra).ThenBy(a=>a.TipoArchivo))    
         {
             var existe = a.ExisteRutaArchivo();
             sb.AppendLine(string.Join(",",
-                Csv(entradaDeCompra),
-                Csv(a.ID.ToString(CultureInfo.InvariantCulture) ?? string.Empty),
+                Csv(a.EntradaCompra ?? string.Empty),                
                 Csv(a.TipoArchivo.ToString()),
                 Csv(a.RutaArchivo ?? string.Empty),
-                Csv(a.Destino ?? string.Empty),
+                Csv(existe ?a.Destino ?? string.Empty: string.Empty),
                 Csv(existe ? "1" : "0")
             ));
         }

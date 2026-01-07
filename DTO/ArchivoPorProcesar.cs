@@ -23,7 +23,7 @@ public class ArchivoPorProcesar
 
     public string toString()
     {
-        return $"TipoArchivo: {TipoArchivo},Origen: {RutaArchivo} ";
+        return $"TipoArchivo: {TipoArchivo},Origen: {RutaArchivo.Replace("//","\\")} ";
     }
 
 }
