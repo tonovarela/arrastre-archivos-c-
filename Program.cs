@@ -26,7 +26,7 @@ class Program
             var archivosProcesados = processor.Procesar(entradaDeCompra);
             var idArchivo = archivosProcesados[0].ID;
 
-//            ordenDAO.EliminarAnexoMov(idArchivo.ToString());
+            ordenDAO.EliminarAnexoMov(idArchivo.ToString());
 
             List<ArchivoPorProcesar> archivosPorRegistrar = archivosProcesados.Where(a => a.ExisteRutaArchivo()).ToList();
             List<ArchivoPorProcesar> archivosNoEncontrados = archivosProcesados.Where(a => !a.ExisteRutaArchivo()).ToList();
@@ -38,7 +38,7 @@ class Program
             {
                 fileOrder.Copy(archivo.RutaArchivo, archivo.Destino);
                 string destino = archivo.Destino.Replace("Volumes", "192.168.2.217");
-             //   ordenDAO.registrarArchivoAnexo(destino, archivo.ID, archivo.TipoArchivo.ToString());
+                ordenDAO.registrarArchivoAnexo(destino, archivo.ID, archivo.TipoArchivo.ToString());
                 // Console.WriteLine(archivo.toString());
             }
 
@@ -68,14 +68,14 @@ class Program
         string path = csvWriter.Write(todos);
         Console.WriteLine($"Reporte generado en: {path}");
 
-        string pathProcessed = Path.Combine(conf.HotFolderPath, "procesados");
+
 
         List<string> archivosEliminar = todos
                                          .Where(x => x.TipoArchivo == TipoArchivo.EC)
                                          .Select(x => x.RutaArchivo)
                                          .ToList();
-
-        //fileOrder.MoveFiles(archivosEliminar, pathProcessed);
+                                                 
+        fileOrder.MoveFiles(archivosEliminar,  Path.Combine(conf.HotFolderPath, "procesados"));
         //fileOrder.EliminarArchivos(archivosEliminar);
     }
 
