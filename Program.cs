@@ -30,30 +30,15 @@ class Program
 
             List<ArchivoPorProcesar> archivosPorRegistrar = archivosProcesados.Where(a => a.ExisteRutaArchivo()).ToList();
             List<ArchivoPorProcesar> archivosNoEncontrados = archivosProcesados.Where(a => !a.ExisteRutaArchivo()).ToList();
-            // Console.WriteLine($"Archivos  para la entrada de compra {entradaDeCompra}:");
-            // Console.WriteLine("--------------------------------------");
-            // Console.WriteLine($"Archivos encontrados: {archivosPorRegistrar.Count} de  {archivosProcesados.Count}");
-            // Console.ForegroundColor = ConsoleColor.DarkGreen;
+            
             foreach (ArchivoPorProcesar archivo in archivosPorRegistrar)
             {
                 fileOrder.Copy(archivo.RutaArchivo, archivo.Destino);
                 string destino = archivo.Destino.Replace("Volumes", "192.168.2.217");
-                ordenDAO.registrarArchivoAnexo(destino, archivo.ID, archivo.TipoArchivo.ToString());
-                // Console.WriteLine(archivo.toString());
+                ordenDAO.registrarArchivoAnexo(destino, archivo.ID, archivo.TipoArchivo.ToString());       
             }
 
-            // if (archivosNoEncontrados.Count > 0)
-            // {
-            //     Console.ResetColor();
-            //     Console.WriteLine($"Archivos no ubicados: {archivosNoEncontrados.Count}");
-            //     Console.ForegroundColor = ConsoleColor.Red;
-            //     foreach (var archivo in archivosNoEncontrados)
-            //     {
-            //         Console.WriteLine(archivo.toString());
-            //     }
-            // }
-            // Console.ResetColor();
-            // Console.WriteLine("--------------------------------------");
+       
             todos.AddRange(archivosPorRegistrar);
             todos.AddRange(archivosNoEncontrados);
 
@@ -64,8 +49,7 @@ class Program
             Console.WriteLine("No se encontraron archivos para procesar.");
             return;
         }
-        string path = csvWriter.Write(todos);        
-//        Console.WriteLine($"Reporte generado en: {path}");
+        csvWriter.Write(todos);        
 
         List<string> archivosEliminar = todos
                                          .Where(x => x.TipoArchivo == TipoArchivo.EC)
