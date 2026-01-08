@@ -31,19 +31,21 @@ public class CsvReportWriter
         var fileName = $"reporte_{DateTime.Now:yyyyMMdd_HHmmss}.csv";
         var fullPath = Path.Combine(_outputDirectory, fileName);
 
+        
+
         var sb = new StringBuilder();
         sb.AppendLine("EntradaCompra,TipoArchivo,RutaArchivo,Destino,ExisteRutaArchivo");
 
         var grupos = archivosProcesados.GroupBy(a => a.EntradaCompra).ToList();
         grupos.ForEach(item =>
         {
-            foreach (var archivo in item.OrderBy(a => a.TipoArchivo))
+            foreach (var archivo in item.OrderBy(a => a.TipoArchivo).ThenBy(a=>a.RutaArchivo))
             {
                 var existe = archivo.ExisteRutaArchivo();
                 sb.AppendLine(string.Join(",",
                     Csv(archivo.EntradaCompra ?? string.Empty),
                     Csv(archivo.TipoArchivo.ToString()),
-                    Csv(archivo.RutaArchivo ?? string.Empty),
+                    Csv(archivo.RutaArchivo.Replace("//", "\\")),
                     Csv(existe ? archivo.Destino ?? string.Empty : string.Empty),
                     Csv(existe ? "1" : "0")
                 ));

@@ -54,7 +54,7 @@ class Program
             // }
             // Console.ResetColor();
             // Console.WriteLine("--------------------------------------");
-            todos.AddRange(archivosProcesados);
+            todos.AddRange(archivosPorRegistrar);
             todos.AddRange(archivosNoEncontrados);
 
 
@@ -64,11 +64,8 @@ class Program
             Console.WriteLine("No se encontraron archivos para procesar.");
             return;
         }
-        
-        string path = csvWriter.Write(todos);
-        Console.WriteLine($"Reporte generado en: {path}");
-
-
+        string path = csvWriter.Write(todos);        
+//        Console.WriteLine($"Reporte generado en: {path}");
 
         List<string> archivosEliminar = todos
                                          .Where(x => x.TipoArchivo == TipoArchivo.EC)

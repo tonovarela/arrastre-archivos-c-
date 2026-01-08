@@ -31,6 +31,10 @@ public class FileOrder
         foreach (var archivo in pathFiles)
         {
             string destino = Path.Combine(pathProcessed, Path.GetFileName(archivo));
+            if (File.Exists(destino))
+            {
+                File.Delete(destino);
+            }
             File.Move(archivo, destino);
         }
     }

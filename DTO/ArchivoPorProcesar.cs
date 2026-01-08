@@ -9,7 +9,7 @@ public class ArchivoPorProcesar
 
 
     public string RutaArchivo { get; set; }
-    public TipoArchivo TipoArchivo { get; set; } 
+    public required TipoArchivo TipoArchivo { get; set; } 
     public string Destino { get; set; }
     public int ID { get; set; }    
     public string  EntradaCompra { get; set; }
