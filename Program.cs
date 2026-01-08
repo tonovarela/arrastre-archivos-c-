@@ -38,9 +38,7 @@ class Program
                 string destino = archivo.Destino.Replace("Volumes", "192.168.2.217");
                 ordenDAO.registrarArchivoAnexo(destino, archivo.ID, archivo.TipoArchivo.ToString());       
             }
-       
-            
-
+                   
         }
         if (todos.Count >0){
         csvWriter.Write(todos);        
