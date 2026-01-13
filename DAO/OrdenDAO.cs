@@ -9,7 +9,7 @@ public class OrdenDAO : DAO
 
     public void EliminarAnexoMov(string Id)
     {
-        string sql = @"DELETE FROM LitoPrueba.dbo.AnexoMov WHERE Id = @Id";
+        string sql = @"DELETE FROM dbo.AnexoMov WHERE Id = @Id and tipoDocumento is not null";
         try
         {
             using (SqlConnection connection = new SqlConnection(connectionString))

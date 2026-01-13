@@ -25,9 +25,14 @@ class Program
         List<string> entradasMover = new List<string>();
         foreach (string entradaDeCompra in archivos)
         {
+            Console.WriteLine($"Archivos procesados para la entrada {entradaDeCompra}");
             var archivosProcesados = processor.Procesar(entradaDeCompra);
+            if (archivosProcesados.Count ==0)
+            {
+                continue;
+            }            
             var idArchivo = archivosProcesados[0].ID;
-            //ordenDAO.EliminarAnexoMov(idArchivo.ToString());
+            ordenDAO.EliminarAnexoMov(idArchivo.ToString());
             List<ArchivoPorProcesar> archivosPorRegistrar = archivosProcesados.Where(a => a.ExisteRutaArchivo()).ToList();
             List<ArchivoPorProcesar> archivosNoEncontrados = archivosProcesados.Where(a => !a.ExisteRutaArchivo()).ToList();            
             todos.AddRange(archivosPorRegistrar);
@@ -41,8 +46,9 @@ class Program
             {
                 fileOrder.Copy(archivo.RutaArchivo, archivo.Destino);
                 string destino = archivo.Destino.Replace("Volumes", "192.168.2.217");
-                //ordenDAO.registrarArchivoAnexo(destino, archivo.ID, archivo.TipoArchivo.ToString());       
+                ordenDAO.registrarArchivoAnexo(destino, archivo.ID, archivo.TipoArchivo.ToString());
             }
+                   
                    
         }
         if (todos.Count >0){
